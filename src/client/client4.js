@@ -233,6 +233,10 @@ export default class Client4 {
         return `${this.getBaseRoute()}/system/timezones`;
     }
 
+    getSchemesRoute() {
+        return `${this.getBaseRoute()}/schemes`;
+    }
+
     getOptions(options) {
         const newOptions = Object.assign({}, options);
 
@@ -1090,12 +1094,12 @@ export default class Client4 {
         );
     };
 
-    patchChannel = async (channelId, patch) => {
+    patchChannel = async (channelId, channel) => {
         this.trackEvent('api', 'api_channels_patch', {channel_id: channelId});
 
         return this.doFetch(
             `${this.getChannelRoute(channelId)}/patch`,
-            {method: 'put', body: JSON.stringify(patch)}
+            {method: 'put', body: JSON.stringify(channel)}
         );
     };
 
@@ -1238,6 +1242,7 @@ export default class Client4 {
     };
 
     // Post Routes
+
     createPost = async (post) => {
         this.trackEvent('api', 'api_posts_create', {channel_id: post.channel_id});
 
@@ -1850,6 +1855,7 @@ export default class Client4 {
     };
 
     // Timezone Routes
+
     getTimezones = async () => {
         return this.doFetch(
             `${this.getTimezonesRoute()}`,
@@ -2150,6 +2156,7 @@ export default class Client4 {
     };
 
     // Role Routes
+
     getRole = async (roleId) => {
         return this.doFetch(
             `${this.getRolesRoute()}/${roleId}`,
@@ -2175,6 +2182,63 @@ export default class Client4 {
         return this.doFetch(
             `${this.getRolesRoute()}/${roleId}/patch`,
             {method: 'put', body: JSON.stringify(role)}
+        );
+    };
+
+    // Scheme Routes
+
+    getSchemes = async (scope = '', page = 0, perPage = PER_PAGE_DEFAULT) => {
+        return this.doFetch(
+            `${this.getSchemesRoute()}${buildQueryString({page, per_page: perPage})}`,
+            {method: 'get'}
+        );
+    };
+
+    createScheme = async (scheme) => {
+        this.trackEvent('api', 'api_schemes_create');
+
+        return this.doFetch(
+            `${this.getSchemesRoute()}`,
+            {method: 'post', body: JSON.stringify(scheme)}
+        );
+    };
+
+    getScheme = async (schemeId) => {
+        return this.doFetch(
+            `${this.getSchemesRoute()}/${schemeId}`,
+            {method: 'get'}
+        );
+    };
+
+    deleteScheme = async (schemeId) => {
+        this.trackEvent('api', 'api_schemes_delete');
+
+        return this.doFetch(
+            `${this.getSchemesRoute()}/${schemeId}`,
+            {method: 'delete'}
+        );
+    };
+
+    patchScheme = async (schemeId, scheme) => {
+        this.trackEvent('api', 'api_schemes_patch', {scheme_id: schemeId});
+
+        return this.doFetch(
+            `${this.getSchemesRoute()}/${schemeId}/patch`,
+            {method: 'put', body: JSON.stringify(scheme)}
+        );
+    };
+
+    getSchemeTeams = async (schemeId, page = 0, perPage = PER_PAGE_DEFAULT) => {
+        return this.doFetch(
+            `${this.getSchemesRoute()}/${schemeId}/teams${buildQueryString({page, per_page: perPage})}`,
+            {method: 'get'}
+        );
+    };
+
+    getSchemeChannels = async (schemeId, page = 0, perPage = PER_PAGE_DEFAULT) => {
+        return this.doFetch(
+            `${this.getSchemesRoute()}/${schemeId}/channels${buildQueryString({page, per_page: perPage})}`,
+            {method: 'get'}
         );
     };
 

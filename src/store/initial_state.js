@@ -501,6 +501,36 @@ const state: GlobalState = {
                 error: null,
             },
         },
+        schemes: {
+            getSchemes: {
+                status: 'not_started',
+                error: null,
+            },
+            getScheme: {
+                status: 'not_started',
+                error: null,
+            },
+            createScheme: {
+                status: 'not_started',
+                error: null,
+            },
+            deleteScheme: {
+                status: 'not_started',
+                error: null,
+            },
+            patchScheme: {
+                status: 'not_started',
+                error: null,
+            },
+            getSchemeTeams: {
+                status: 'not_started',
+                error: null,
+            },
+            getSchemeChannels: {
+                status: 'not_started',
+                error: null,
+            },
+        },
     },
 };
 
