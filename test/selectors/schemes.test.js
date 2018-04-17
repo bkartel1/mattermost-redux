@@ -8,8 +8,6 @@ import TestHelper from 'test/test_helper';
 import * as Selectors from 'selectors/entities/schemes';
 import {ScopeTypes} from 'constants/schemes';
 
-// import {General} from 'constants';
-
 describe('Selectors.Schemes', () => {
     const scheme1 = TestHelper.mockSchemeWithId();
     scheme1.scope = ScopeTypes.CHANNEL;
@@ -55,25 +53,29 @@ describe('Selectors.Schemes', () => {
         assert.equal(Selectors.getScheme(testState, scheme1.id), scheme1);
     });
 
-    it('getSchemeChannels', () => {
-        const results = Selectors.getSchemeChannels(testState, scheme1.id);
+    it('makeGetSchemeChannels', () => {
+        const getSchemeChannels = Selectors.makeGetSchemeChannels();
+        const results = getSchemeChannels(testState, {schemeId: scheme1.id});
         assert.equal(results.length, 1);
         assert.equal(results[0].name, channel1.name);
     });
 
-    it('getSchemeChannels with team scope scheme', () => {
-        const results = Selectors.getSchemeChannels(testState, scheme2.id);
+    it('makeGetSchemeChannels with team scope scheme', () => {
+        const getSchemeChannels = Selectors.makeGetSchemeChannels();
+        const results = getSchemeChannels(testState, {schemeId: scheme2.id});
         assert.equal(results.length, 0);
     });
 
-    it('getSchemeTeams', () => {
-        const results = Selectors.getSchemeTeams(testState, scheme2.id);
+    it('makeGetSchemeTeams', () => {
+        const getSchemeTeams = Selectors.makeGetSchemeTeams();
+        const results = getSchemeTeams(testState, {schemeId: scheme2.id});
         assert.equal(results.length, 1);
         assert.equal(results[0].name, team1.name);
     });
 
     it('getSchemeTeams with channel scope scheme', () => {
-        const results = Selectors.getSchemeTeams(testState, scheme1.id);
+        const getSchemeTeams = Selectors.makeGetSchemeTeams();
+        const results = getSchemeTeams(testState, {schemeId: scheme1.id});
         assert.equal(results.length, 0);
     });
 });

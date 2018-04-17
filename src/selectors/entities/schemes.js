@@ -2,6 +2,7 @@
 // See License.txt for license information.
 // @flow
 
+import {createSelector} from 'reselect';
 import {getAllChannels} from 'selectors/entities/channels';
 import {getTeams} from 'selectors/entities/teams';
 import {ScopeTypes} from 'constants/schemes';
@@ -19,44 +20,56 @@ export function getScheme(state: GlobalState, id: string): Scheme {
     return schemes[id];
 }
 
-export function getSchemeChannels(state: GlobalState, schemeId: string): Array<Channel> {
-    const {scope} = getScheme(state, schemeId);
+export function makeGetSchemeChannels() {
+    return createSelector(
+        getAllChannels,
+        (state, props) => getScheme(state, props.schemeId),
+        (allChannels, scheme) => {
+            const {scope} = scheme;
 
-    if (scope === ScopeTypes.TEAM) {
-        const msg = `Not implemented: scheme '${schemeId}' is team-scope but 'getSchemeChannels' only accepts channel-scoped schemes.`;
-        console.warn(msg); // eslint-disable-line no-console
-        return [];
-    }
+            if (scope === ScopeTypes.TEAM) {
+                const msg = `Not implemented: scheme '${scheme.id}' is team-scope but 'getSchemeChannels' only accepts channel-scoped schemes.`;
+                console.warn(msg); // eslint-disable-line no-console
+                return [];
+            }
 
-    const schemeChannels: Array<Channel> = [];
+            const schemeChannels: Array<Channel> = [];
 
-    Object.entries(getAllChannels(state)).forEach((item: [string, Channel]) => {
-        const [, channel: Channel] = item;
-        if (channel.scheme_id === schemeId) {
-            schemeChannels.push(channel);
+            Object.entries(allChannels).forEach((item: [string, Channel]) => {
+                const [, channel: Channel] = item;
+                if (channel.scheme_id === scheme.id) {
+                    schemeChannels.push(channel);
+                }
+            });
+
+            return schemeChannels;
         }
-    });
-
-    return schemeChannels;
+    );
 }
 
-export function getSchemeTeams(state: GlobalState, schemeId: string): Array<Team> {
-    const {scope} = getScheme(state, schemeId);
+export function makeGetSchemeTeams() {
+    return createSelector(
+        getTeams,
+        (state, props) => getScheme(state, props.schemeId),
+        (allTeams, scheme) => {
+            const {scope} = scheme;
 
-    if (scope === ScopeTypes.CHANNEL) {
-        const msg = `Error: scheme '${schemeId}' is channel-scoped but 'getSchemeChannels' only accepts team-scoped schemes.`;
-        console.warn(msg); // eslint-disable-line no-console
-        return [];
-    }
+            if (scope === ScopeTypes.CHANNEL) {
+                const msg = `Error: scheme '${scheme.id}' is channel-scoped but 'getSchemeChannels' only accepts team-scoped schemes.`;
+                console.warn(msg); // eslint-disable-line no-console
+                return [];
+            }
 
-    const schemeTeams: Array<Team> = [];
+            const schemeTeams: Array<Team> = [];
 
-    Object.entries(getTeams(state)).forEach((item: [string, Team]) => {
-        const [, team: Team] = item;
-        if (team.scheme_id === schemeId) {
-            schemeTeams.push(team);
+            Object.entries(allTeams).forEach((item: [string, Team]) => {
+                const [, team: Team] = item;
+                if (team.scheme_id === scheme.id) {
+                    schemeTeams.push(team);
+                }
+            });
+
+            return schemeTeams;
         }
-    });
-
-    return schemeTeams;
+    );
 }
