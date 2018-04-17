@@ -23,7 +23,9 @@ export function getSchemeChannels(state: GlobalState, schemeId: string): Array<C
     const {scope} = getScheme(state, schemeId);
 
     if (scope === ScopeTypes.TEAM) {
-        throw new Error(`Not implemented: scheme '${schemeId}' is team-scope but 'getSchemeChannels' only accepts channel-scoped schemes.`);
+        const msg = `Not implemented: scheme '${schemeId}' is team-scope but 'getSchemeChannels' only accepts channel-scoped schemes.`;
+        console.warn(msg); // eslint-disable-line no-console
+        return [];
     }
 
     const schemeChannels: Array<Channel> = [];
@@ -42,7 +44,9 @@ export function getSchemeTeams(state: GlobalState, schemeId: string): Array<Team
     const {scope} = getScheme(state, schemeId);
 
     if (scope === ScopeTypes.CHANNEL) {
-        throw new Error(`Error: scheme '${schemeId}' is channel-scoped but 'getSchemeChannels' only accepts team-scoped schemes.`);
+        const msg = `Error: scheme '${schemeId}' is channel-scoped but 'getSchemeChannels' only accepts team-scoped schemes.`;
+        console.warn(msg); // eslint-disable-line no-console
+        return [];
     }
 
     const schemeTeams: Array<Team> = [];

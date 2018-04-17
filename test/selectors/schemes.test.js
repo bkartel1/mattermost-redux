@@ -62,9 +62,8 @@ describe('Selectors.Schemes', () => {
     });
 
     it('getSchemeChannels with team scope scheme', () => {
-        assert.throws(() => {
-            Selectors.getSchemeChannels(testState, scheme2.id);
-        });
+        const results = Selectors.getSchemeChannels(testState, scheme2.id);
+        assert.equal(results.length, 0);
     });
 
     it('getSchemeTeams', () => {
@@ -74,8 +73,7 @@ describe('Selectors.Schemes', () => {
     });
 
     it('getSchemeTeams with channel scope scheme', () => {
-        assert.throws(() => {
-            Selectors.getSchemeTeams(testState, scheme1.id);
-        });
+        const results = Selectors.getSchemeTeams(testState, scheme1.id);
+        assert.equal(results.length, 0);
     });
 });
