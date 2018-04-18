@@ -6,7 +6,7 @@ import {Client4} from 'client';
 import {SchemeTypes} from 'action_types';
 import {General} from 'constants';
 import {bindClientFunc} from './helpers';
-import type {Scheme} from '../types/schemes';
+import type {Scheme, SchemeScope} from '../types/schemes';
 
 export function getScheme(schemeId: string) {
     return bindClientFunc(
@@ -18,12 +18,13 @@ export function getScheme(schemeId: string) {
     );
 }
 
-export function getSchemes(page: number = 0, perPage: number = General.PAGE_SIZE_DEFAULT) {
+export function getSchemes(scope: SchemeScope, page: number = 0, perPage: number = General.PAGE_SIZE_DEFAULT) {
     return bindClientFunc(
         Client4.getSchemes,
         SchemeTypes.GET_SCHEMES_REQUEST,
         [SchemeTypes.RECEIVED_SCHEMES, SchemeTypes.GET_SCHEMES_SUCCESS],
         SchemeTypes.GET_SCHEMES_FAILURE,
+        scope,
         page,
         perPage
     );

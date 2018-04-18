@@ -292,19 +292,19 @@ export default class Client4 {
         );
     }
 
-    patchMe = async (user) => {
+    patchMe = async (userPatch) => {
         return this.doFetch(
             `${this.getUserRoute('me')}/patch`,
-            {method: 'put', body: JSON.stringify(user)}
+            {method: 'put', body: JSON.stringify(userPatch)}
         );
     }
 
-    patchUser = async (user) => {
+    patchUser = async (userPatch) => {
         this.trackEvent('api', 'api_users_patch');
 
         return this.doFetch(
-            `${this.getUserRoute(user.id)}/patch`,
-            {method: 'put', body: JSON.stringify(user)}
+            `${this.getUserRoute(userPatch.id)}/patch`,
+            {method: 'put', body: JSON.stringify(userPatch)}
         );
     }
 
@@ -1094,12 +1094,12 @@ export default class Client4 {
         );
     };
 
-    patchChannel = async (channelId, channel) => {
+    patchChannel = async (channelId, channelPatch) => {
         this.trackEvent('api', 'api_channels_patch', {channel_id: channelId});
 
         return this.doFetch(
             `${this.getChannelRoute(channelId)}/patch`,
-            {method: 'put', body: JSON.stringify(channel)}
+            {method: 'put', body: JSON.stringify(channelPatch)}
         );
     };
 
@@ -1272,12 +1272,12 @@ export default class Client4 {
         );
     };
 
-    patchPost = async (post) => {
-        this.trackEvent('api', 'api_posts_patch', {channel_id: post.channel_id});
+    patchPost = async (postPatch) => {
+        this.trackEvent('api', 'api_posts_patch', {channel_id: postPatch.channel_id});
 
         return this.doFetch(
-            `${this.getPostRoute(post.id)}/patch`,
-            {method: 'put', body: JSON.stringify(post)}
+            `${this.getPostRoute(postPatch.id)}/patch`,
+            {method: 'put', body: JSON.stringify(postPatch)}
         );
     };
 
@@ -2178,10 +2178,10 @@ export default class Client4 {
         );
     };
 
-    patchRole = async (roleId, role) => {
+    patchRole = async (roleId, rolePatch) => {
         return this.doFetch(
             `${this.getRolesRoute()}/${roleId}/patch`,
-            {method: 'put', body: JSON.stringify(role)}
+            {method: 'put', body: JSON.stringify(rolePatch)}
         );
     };
 
@@ -2189,7 +2189,7 @@ export default class Client4 {
 
     getSchemes = async (scope = '', page = 0, perPage = PER_PAGE_DEFAULT) => {
         return this.doFetch(
-            `${this.getSchemesRoute()}${buildQueryString({page, per_page: perPage})}`,
+            `${this.getSchemesRoute()}${buildQueryString({scope, page, per_page: perPage})}`,
             {method: 'get'}
         );
     };
@@ -2219,12 +2219,12 @@ export default class Client4 {
         );
     };
 
-    patchScheme = async (schemeId, scheme) => {
+    patchScheme = async (schemeId, schemePatch) => {
         this.trackEvent('api', 'api_schemes_patch', {scheme_id: schemeId});
 
         return this.doFetch(
             `${this.getSchemesRoute()}/${schemeId}/patch`,
-            {method: 'put', body: JSON.stringify(scheme)}
+            {method: 'put', body: JSON.stringify(schemePatch)}
         );
     };
 
